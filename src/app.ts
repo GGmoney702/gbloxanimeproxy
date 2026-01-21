@@ -4,24 +4,28 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const helmet = require("helmet");
 import { SERVER, ROUTES } from './config/constants.js';
-import { corsMiddleware, errorHandler, requestLogger } from './middleware.js';
+import { corsMiddleware, errorHandler, requestLogger,  } from './middleware.js';
 import proxyRoutes from './proxy-routes.js';
 
+/**
+ * Create and configure the Express application
+ */
 const app: Express = express();
 
+// Apply global middleware
 app.use(compression());
-app.use(
-  helmet({
-    contentSecurityPolicy: false
-  })
-);
-
+app.use(helmet({
+  contentSecurityPolicy: false // Disable CSP for proxy functionality
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Apply custom middleware
 app.use(corsMiddleware);
 app.use(requestLogger);
 
+
+// Set up routes
 app.use(ROUTES.PROXY_BASE, proxyRoutes);
 
 // Root route
