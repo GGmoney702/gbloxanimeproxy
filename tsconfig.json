@@ -11,6 +11,7 @@
       "sourceMap": true,
       "declaration": true,
       "resolveJsonModule": true,
+      "allowSyntheticDefaultImports": true,
       "isolatedModules": true,
       "lib": ["ES2022"]
     },
